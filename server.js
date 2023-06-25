@@ -69,6 +69,50 @@ app.post('/register', (req, res) => {
   });
 });
 
+
+// Define the authentication endpoint
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+  
+    // Validate the request body
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password are required' });
+    }
+  
+    // Check if the username exists in the database
+    db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+      if (err) {
+        console.error('Error executing database query:', err);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+  
+      if (results.length === 0) {
+        return res.status(401).json({ message: 'Invalid username or password' });
+      }
+  
+      const user = results[0];
+  
+      // Compare the provided password with the hashed password in the database
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) {
+          console.error('Error comparing passwords:', err);
+          return res.status(500).json({ message: 'Internal server error' });
+        }
+  
+        if (!isMatch) {
+          return res.status(401).json({ message: 'Invalid username or password' });
+        }
+  
+        // Generate a JWT
+        const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
+  
+        // Return the JWT to the client
+        return res.status(200).json({ token });
+      });
+    });
+  });
+
+  
 // Start the server
 app.listen(3000, () => {
   console.log('Server listening on port 3000');
