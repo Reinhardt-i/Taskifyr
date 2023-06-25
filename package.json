@@ -1,0 +1,22 @@
+{
+  "name": "taskifyr",
+  "version": "1.0.0",
+  "description": "Streamline your productivity and conquer your to-do list with Taskifyr!",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Reinhardt-i/Taskifyr.git"
+  },
+  "keywords": [
+    "TODO"
+  ],
+  "author": "Reinhardt-i",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Reinhardt-i/Taskifyr/issues"
+  },
+  "homepage": "https://github.com/Reinhardt-i/Taskifyr#readme"
+}
