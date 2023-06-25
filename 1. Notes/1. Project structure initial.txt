@@ -1,0 +1,21 @@
+config/: config.js holds the configuration settings for my application, such as database connection details, 
+         API keys, or other environment-specific variables.
+
+controllers/: The controllers directory contains the controller files that handle the logic for different routes 
+              and API endpoints. The taskController.js file is responsible for tasks-related functionality, while 
+              authController.js handles authentication-related logic.
+
+models/: The models directory contains the model files representing the database schema and interacting with the database. 
+         The taskModel.js file defines the task model, which includes properties and methods for tasks. 
+         Similarly, userModel.js defines the user model for managing user-related data.
+
+routes/: This directory contains the route files that define the API endpoints for the application. 
+         The taskRoutes.js file defines the routes related to tasks, while authRoutes.js handles routes for user authentication.
+
+public/: The public directory holds the static assets for my frontend. The css/ folder contains CSS stylesheets, 
+          including the style.css file. The js/ folder contains JavaScript files, with app.js responsible for the frontend logic. 
+          The index.html file serves as the main HTML file for my web app.
+
+views/: The views directory typically contains the server-side view templates, such as EJS or Pug files, used to 
+        render dynamic HTML pages. In this structure, the index.ejs file represents the view template for the home page.
+
