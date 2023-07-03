@@ -1,0 +1,49 @@
+
+File Structure: I will organize the code into separate files and folders to follow a modular approach.
+
+Folder Structure:
+
+Create a src folder to hold the source code.
+Inside the src folder, create the following folders: config, controllers, models, public, routes, and views.
+Move the respective files into their corresponding folders:
+config.js to src/config/config.js
+authController.js to src/controllers/authController.js
+taskController.js to src/controllers/taskController.js
+taskModel.js to src/models/taskModel.js
+userModel.js to src/models/userModel.js
+style.css to src/public/css/style.css
+app.js to src/public/js/app.js
+authRoutes.js to src/routes/authRoutes.js
+taskRoutes.js to src/routes/taskRoutes.js
+index.html to src/views/index.html
+login.html to src/views/login.html
+register.html to src/views/register.html
+create.html to src/views/create.html
+
+
+
+Dependencies and Setup:
+
+Create a new package.json file by running npm init -y in the root directory.
+Install the required dependencies by running the following commands:
+shell
+
+npm install express mongoose dotenv
+npm install jsonwebtoken
+npm install ejs
+Create a .env file in the root directory and add the following content:
+bash
+
+PORT=3000
+MONGODB_URI=<your_mongodb_uri>
+JWT_SECRET=ooS8XumrBnzzXn47kBavC3tWVhvXPQ5Ro6FGfltInM14juRXkdCve2z0Ty8OX+ici26KIJRpDaLAtmZlxFtV+qp9GEYT3MCJUeIk2YA9vLhs8eF55ZR6y4FG90SBhshGmdEbQBFIwrW1QG9cOwnpaNeswVlUeUxOf+S+iMckueIDVRdmgPWyDMTUCPdT3ZlmaO+RQ8bcBD57cBIDsfLFP5Su/ohkdKIxuY9wzt5ukSM2MszTX+NhpGaSjhWQAyn6oHikSvvoIsAqfoQAyoMY3E7QeESnT3E+Naf/gI782ATwTK79STifsEo+kl6g2mlRSylD/xMWBRzyHM2L1Cs/Nw==
+Database Connection:
+
+Create a db.js file in the src folder.
+Inside db.js, add the code to connect to MongoDB using Mongoose.
+Update the config.js file to load the JWT_SECRET from the environment variable.
+Authentication Routes:
+
+Modify authRoutes.js to use the authController methods.
+Update the route handlers to handle form submissions and redirects.
+Update the login and register routes to render the corresponding EJS views instead of HTML files.

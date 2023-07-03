@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .logout-btn {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <form id="login-form">
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <input type="submit" value="Login">
+    </form>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    // Function to handle login
+    function login() {
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+
+      // Here, you can add your login validation logic
+      // For simplicity, we're using a hardcoded username and password
+      if (username === "admin" && password === "password") {
+        // Successful login
+        document.getElementById("login-form").reset();
+        document.querySelector(".container").style.display = "none";
+        document.querySelector(".logout-btn").style.display = "block";
+      } else {
+        alert("Invalid username or password");
+      }
+    }
+
+    // Function to handle logout
+    function logout() {
+      document.querySelector(".container").style.display = "block";
+      document.querySelector(".logout-btn").style.display = "none";
+    }
+
+    // Event listener for login form submission
+    document.getElementById("login-form").addEventListener("submit", function(e) {
+      e.preventDefault(); // Prevent form submission
+      login();
+    });
+  </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 /* Reset styles */
-html, body, header, main, footer, h1, h2, h3, h4, h5, h6, p, ul, li, a, form, input, button {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -9,7 +9,7 @@ html, body, header, main, footer, h1, h2, h3, h4, h5, h6, p, ul, li, a, form, in
 body {
   font-family: Arial, sans-serif;
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -27,6 +27,7 @@ header {
   background-color: #333;
   color: #fff;
   padding: 20px;
+  text-align: center;
 }
 
 header h1 {
@@ -100,6 +101,7 @@ button {
   margin-bottom: 10px;
   padding: 10px;
   background-color: #f1f1f1;
+  border-radius: 5px;
 }
 
 .task-item span {
