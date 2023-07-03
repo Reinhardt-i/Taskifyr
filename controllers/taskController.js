@@ -1,114 +1,108 @@
-// Import dependencies
 const Task = require('../models/Task');
 
-// Controller function to create a new task
-const createTask = async (req, res) => {
-  try {
-    // Retrieve task data from the request body
-    const { title, description } = req.body;
 
-    // Create a new task
-    const newTask = new Task({ title, description });
+// Controller method to get all tasks for a user
+exports.getAllTasks = (req, res) => {
+  const userId = req.user.id;
 
-    // Save the task to the database
-    const savedTask = await newTask.save();
+  // Find all tasks for the user
+  Task.find({ user: userId }, (err, tasks) => {
+    if (err) {
+      console.error('Error fetching tasks:', err);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
 
-    // Return the saved task as the response
-    res.status(201).json(savedTask);
-  } catch (error) {
-    console.error('Error creating task:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
+    return res.status(200).json(tasks);
+  });
 };
 
-// Controller function to get all tasks
-const getAllTasks = async (req, res) => {
-  try {
-    // Retrieve all tasks from the database
-    const tasks = await Task.find();
 
-    // Return the tasks as the response
-    res.status(200).json(tasks);
-  } catch (error) {
-    console.error('Error retrieving tasks:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
+// Controller method to create a new task
+exports.createTask = (req, res) => {
+  const userId = req.user.id;
+  const { title, description } = req.body;
+
+  // Create a new task with the provided title, description, and user ID
+  const newTask = new Task({
+    title,
+    description,
+    user: userId
+  });
+
+  // Save the new task to the database
+  newTask.save((err, task) => {
+    if (err) {
+      console.error('Error creating task:', err);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+
+    return res.status(201).json(task);
+  });
 };
 
-// Controller function to get a single task by ID
-const getTaskById = async (req, res) => {
-  try {
-    // Retrieve the task ID from the request parameters
-    const { id } = req.params;
 
-    // Find the task by ID in the database
-    const task = await Task.findById(id);
+// Controller method to update an existing task
+exports.updateTask = (req, res) => {
+  const taskId = req.params.id;
+  const userId = req.user.id;
+  const { title, description, completed } = req.body;
 
-    // Check if the task exists
+  // Find the task by ID and user ID
+  Task.findOne({ _id: taskId, user: userId }, (err, task) => {
+    if (err) {
+      console.error('Error fetching task:', err);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+
+    // Check if task exists
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
 
-    // Return the task as the response
-    res.status(200).json(task);
-  } catch (error) {
-    console.error('Error retrieving task:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
+    // Update the task properties
+    task.title = title;
+    task.description = description;
+    task.completed = completed;
+
+    // Save the updated task
+    task.save((err, updatedTask) => {
+      if (err) {
+        console.error('Error updating task:', err);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+
+      return res.status(200).json(updatedTask);
+    });
+  });
 };
 
-// Controller function to update a task by ID
-const updateTaskById = async (req, res) => {
-  try {
-    // Retrieve the task ID from the request parameters
-    const { id } = req.params;
 
-    // Retrieve task data from the request body
-    const { title, description } = req.body;
+// Controller method to delete a task
+exports.deleteTask = (req, res) => {
+  const taskId = req.params.id;
+  const userId = req.user.id;
 
-    // Find the task by ID in the database and update its data
-    const updatedTask = await Task.findByIdAndUpdate(id, { title, description }, { new: true });
+  // Find the task by ID and user ID
+  Task.findOne({ _id: taskId, user: userId }, (err, task) => {
+    if (err) {
+      console.error('Error fetching task:', err);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
 
-    // Check if the task exists
-    if (!updatedTask) {
+    // Check if task exists
+    if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
 
-    // Return the updated task as the response
-    res.status(200).json(updatedTask);
-  } catch (error) {
-    console.error('Error updating task:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
+    // Delete the task
+    task.remove((err) => {
+      if (err) {
+        console.error('Error deleting task:', err);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+
+      return res.status(204).json({ message: 'Task deleted successfully' });
+    });
+  });
 };
 
-// Controller function to delete a task by ID
-const deleteTaskById = async (req, res) => {
-  try {
-    // Retrieve the task ID from the request parameters
-    const { id } = req.params;
-
-    // Find the task by ID in the database and delete it
-    const deletedTask = await Task.findByIdAndDelete(id);
-
-    // Check if the task exists
-    if (!deletedTask) {
-      return res.status(404).json({ message: 'Task not found' });
-    }
-
-    // Return a success message as the response
-    res.status(200).json({ message: 'Task deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting task:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-};
-
-// Export the controller functions
-module.exports = {
-  createTask,
-  getAllTasks,
-  getTaskById,
-  updateTaskById,
-  deleteTaskById,
-};
