@@ -1,6 +1,5 @@
 const Task = require('../models/Task');
 
-
 // Controller method to get all tasks for a user
 exports.getAllTasks = (req, res) => {
   const userId = req.user.id;

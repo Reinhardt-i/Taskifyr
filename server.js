@@ -9,6 +9,7 @@ const app = express();
 const port = 3000;
 
 const taskController = require('./controllers/taskController');
+const authController = require('./controllers/authController');
 
 // Middleware to parse incoming JSON data
 app.use(bodyParser.json());
@@ -171,44 +172,21 @@ app.get('/protected', authenticateToken, (req, res) => {
 
 
 
-// Create a new task
-app.post('/tasks', taskController.createTask);
-
-// Get all tasks
+// Routes for tasks
 app.get('/tasks', taskController.getAllTasks);
-
-// Get a task by ID
-app.get('/tasks/:id', taskController.getTaskById);
-
-// Update a task by ID
-app.put('/tasks/:id', taskController.updateTaskById);
-
-// Delete a task by ID
-app.delete('/tasks/:id', taskController.deleteTaskById);
+app.post('/tasks', authController.authenticateToken, taskController.createTask);
+app.put('/tasks/:id', authController.authenticateToken, taskController.updateTask);
+app.delete('/tasks/:id', authController.authenticateToken, taskController.deleteTask);
 
 
-
-
-
-
+// Routes for authentication
+app.post('/register', authController.register);
+app.post('/login', authController.login);
 
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
+  console.log(`Server listening on port ${port}`);
 });
 
 
-
-/**
- * 
- * 1. API endpoint that allows users to register by providing a username and password -
- * 
- *      The /register endpoint is defined as a POST request handler. It receives the username and password 
- * from the request body. It then validates the request body, checks if the username is already taken in the database, 
- * and inserts the new user into the database if everything is valid.
- * 
- *      Replace 'your_database_username', 'your_database_password', and 'your_database_name' 
- * with actual MySQL database credentials.
- * 
- */

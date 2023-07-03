@@ -1,25 +1,51 @@
 <!DOCTYPE html>
-<html lang="EN-8">
+<html>
 <head>
   <meta charset="UTF-8">
   <title>Task Manager</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-  <h1>Task Manager</h1>
+  <header>
+    <h1>Task Manager</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Tasks</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <form id="taskForm">
-    <label for="title">Title:</label>
-    <input type="text" id="title" required>
+  <main>
+    <section id="taskFormSection">
+      <h2>Add Task</h2>
+      <form id="taskForm">
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input type="text" id="title" required>
+        </div>
 
-    <label for="description">Description:</label>
-    <input type="text" id="description" required>
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <input type="text" id="description" required>
+        </div>
 
-    <button type="submit">Add Task</button>
-  </form>
+        <button type="submit">Add Task</button>
+      </form>
+    </section>
 
-  <ul id="taskList" class="task-list"></ul>
+    <section id="taskListSection">
+      <h2>Task List</h2>
+      <ul id="taskList" class="task-list"></ul>
+    </section>
+  </main>
 
-  <script src="js/app.js"></script>
+  <footer>
+    <p>&copy; 2023 Task Manager</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
