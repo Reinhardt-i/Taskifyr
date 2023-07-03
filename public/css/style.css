@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  input,
+  button {
+    margin-bottom: 10px;
+  }
+  
+  .task-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .task-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f1f1f1;
+  }
+  
+  .task-item span {
+    font-weight: bold;
+  }
+  
+  .task-item button {
+    margin-left: 10px;
+  }
+  
