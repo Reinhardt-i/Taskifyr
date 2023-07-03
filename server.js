@@ -14,12 +14,29 @@ const taskController = require('./controllers/taskController');
 app.use(bodyParser.json());
 
 
+
+// const pool = require('./db');
+// app.get('/tasks', (req, res) => {
+//   const query = 'SELECT * FROM tasks';
+
+//   pool.query(query, (error, results) => {
+//     if (error) {
+//       console.error(error);
+//       res.status(500).json({ error: 'An error occurred while fetching tasks' });
+//     } else {
+//       res.json(results);
+//     }
+//   });
+// });
+
+
+
 // Create a MySQL database connection
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'your_database_username',
-  password: 'your_database_password',
-  database: 'your_database_name'
+  user: 'uroot',
+  password: 'Database02%',
+  database: 'taskifyr'
 });
 
 
