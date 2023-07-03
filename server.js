@@ -1,15 +1,16 @@
-// Import necessary modules and dependencies
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// Create an instance of Express
-const app = express();
 
-// Configure middleware
-app.use(bodyParser.urlencoded({ extended: true }));
+const app = express();
+const port = 3000;
+
+const taskController = require('./controllers/taskController');
+
+// Middleware to parse incoming JSON data
 app.use(bodyParser.json());
 
 
@@ -21,6 +22,7 @@ const db = mysql.createConnection({
   database: 'your_database_name'
 });
 
+
 // Connect to the database
 db.connect((err) => {
   if (err) {
@@ -30,24 +32,25 @@ db.connect((err) => {
   console.log('Connected to the database');
 });
 
-// Define the registration endpoint
+
+// User Registration Endpoint
 app.post('/register', (req, res) => {
   const { username, password } = req.body;
 
-  // Validate the request body
+  // Validate input
   if (!username || !password) {
     return res.status(400).json({ message: 'Username and password are required' });
   }
 
-  // Check if the username is already taken
+  // Check if the username already exists in the database
   db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
     if (err) {
-      console.error('Error executing database query:', err);
+      console.error('Error checking username in the database:', err);
       return res.status(500).json({ message: 'Internal server error' });
     }
 
     if (results.length > 0) {
-      return res.status(409).json({ message: 'Username is already taken' });
+      return res.status(409).json({ message: 'Username already exists' });
     }
 
     // Hash the password
@@ -60,7 +63,7 @@ app.post('/register', (req, res) => {
       // Insert the new user into the database
       db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err) => {
         if (err) {
-          console.error('Error executing database query:', err);
+          console.error('Error inserting user into the database:', err);
           return res.status(500).json({ message: 'Internal server error' });
         }
 
@@ -71,75 +74,110 @@ app.post('/register', (req, res) => {
 });
 
 
-// Define the authentication endpoint
+// User Login Endpoint
 app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-  
-    // Validate the request body
-    if (!username || !password) {
-      return res.status(400).json({ message: 'Username and password are required' });
+  const { username, password } = req.body;
+
+  // Validate input
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username and password are required' });
+  }
+
+  // Check if the username exists in the database
+  db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+    if (err) {
+      console.error('Error checking username in the database:', err);
+      return res.status(500).json({ message: 'Internal server error' });
     }
-  
-    // Check if the username exists in the database
-    db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+
+    if (results.length === 0) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const user = results[0];
+
+    // Compare the provided password with the hashed password in the database
+    bcrypt.compare(password, user.password, (err, isMatch) => {
       if (err) {
-        console.error('Error executing database query:', err);
+        console.error('Error comparing passwords:', err);
         return res.status(500).json({ message: 'Internal server error' });
       }
-  
-      if (results.length === 0) {
-        return res.status(401).json({ message: 'Invalid username or password' });
+
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Invalid credentials' });
       }
-  
-      const user = results[0];
-  
-      // Compare the provided password with the hashed password in the database
-      bcrypt.compare(password, user.password, (err, isMatch) => {
-        if (err) {
-          console.error('Error comparing passwords:', err);
-          return res.status(500).json({ message: 'Internal server error' });
-        }
-  
-        if (!isMatch) {
-          return res.status(401).json({ message: 'Invalid username or password' });
-        }
-  
-        // Generate a JWT
-        const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
-  
-        // Return the JWT to the client
-        return res.status(200).json({ token });
-      });
+
+      // Generate JWT
+      const token = jwt.sign({ id: user.id, username: user.username }, 'your_secret_key');
+
+      // Return the JWT to the client
+      return res.status(200).json({ token });
     });
   });
-
-
-
-// Middleware for token validation
-const authenticateToken = (req, res, next) => {
-    const token = req.headers['authorization']?.split(' ')[1];
-    if (!token) {
-      return res.status(401).json({ message: 'Access token not found' });
-    }
-  
-    jwt.verify(token, 'your_secret_key', (err, user) => {
-      if (err) {
-        return res.status(403).json({ message: 'Invalid or expired token' });
-      }
-      req.user = user;
-      next();
-    });
-  };
-  
-// Define protected route
-app.get('/protected', authenticateToken, (req, res) => {
-// Code for protected route
 });
 
-  
+
+// Token Validation Middleware
+const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Access token not found' });
+  }
+
+  jwt.verify(token, 'your_secret_key', (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid or expired token' });
+    }
+    req.user = user;
+    next();
+  });
+};
+
+
+// Protected Route Example
+app.get('/protected', authenticateToken, (req, res) => {
+  // Access the authenticated user's information using req.user
+  const userId = req.user.id;
+  const username = req.user.username;
+
+  // Perform operations for the protected route
+
+  return res.status(200).json({ message: 'Protected route accessed successfully' });
+});
+
+
+
+
+
+
+
+
+// Create a new task
+app.post('/tasks', taskController.createTask);
+
+// Get all tasks
+app.get('/tasks', taskController.getAllTasks);
+
+// Get a task by ID
+app.get('/tasks/:id', taskController.getTaskById);
+
+// Update a task by ID
+app.put('/tasks/:id', taskController.updateTaskById);
+
+// Delete a task by ID
+app.delete('/tasks/:id', taskController.deleteTaskById);
+
+
+
+
+
+
+
+
 // Start the server
-app.listen(3000, () => {
-  console.log('Server listening on port 3000');
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
 });
 
 
