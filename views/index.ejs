@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TODO App</title>
+  <link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+  <h1>TODO List</h1>
+  <ul>
+    <% tasks.forEach((task) => { %>
+      <li>
+        <a href="/tasks/<%= task.id %>">
+          <%= task.title %>
+        </a>
+      </li>
+    <% }); %>
+  </ul>
+  <a href="/tasks/create">Create Task</a>
+</body>
+</html>
