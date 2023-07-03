@@ -45,4 +45,12 @@ router.post('/tasks/:id/delete', (req, res) => {
   res.redirect('/tasks');
 });
 
+
+const taskController = require('./taskController');
+const authController = require('./authController');
+
+// Protected route - requires token authentication
+router.get('/tasks', authController.verifyToken, taskController.getTasks);
+router.post('/tasks', authController.verifyToken, taskController.createTask);
+
 module.exports = router;

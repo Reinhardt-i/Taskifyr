@@ -28,4 +28,9 @@ router.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
+
+const authController = require('./authController');
+// Route for user login
+router.post('/login', authController.login);
+
 module.exports = router;
