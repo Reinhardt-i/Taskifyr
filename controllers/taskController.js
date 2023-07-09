@@ -5,15 +5,14 @@ exports.getAllTasks = (req, res) => {
   const userId = req.user.id;
 
   // Find all tasks for the user
-  Task.find({ user: userId }, (err, tasks) => {
-    if (err) {
+  Task.getAllTasks(userId)
+    .then(tasks => res.status(200).json(tasks))
+    .catch(err => {
       console.error('Error fetching tasks:', err);
       return res.status(500).json({ message: 'Internal server error' });
-    }
-
-    return res.status(200).json(tasks);
-  });
+    });
 };
+
 
 
 // Controller method to create a new task
