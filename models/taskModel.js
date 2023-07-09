@@ -25,8 +25,75 @@ class Task {
     });
   }
 
-  // Add other methods for getTaskById, createTask, updateTask, deleteTask
-  // Similar to the getAllTasks method, but with different SQL queries
+  static async getTaskById(id) {
+    const query = 'SELECT * FROM tasks WHERE id = ?';
+    const values = [id];
+  
+    return new Promise((resolve, reject) => {
+      pool.query(query, values, (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          if (results.length === 0) {
+            resolve(null);
+          } else {
+            const { id, title, description, createdBy } = results[0];
+            const task = new Task(id, title, description, createdBy);
+            resolve(task);
+          }
+        }
+      });
+    });
+  }
+  
+  static async createTask(title, description, createdBy) {
+    const query = 'INSERT INTO tasks (title, description, createdBy) VALUES (?, ?, ?)';
+    const values = [title, description, createdBy];
+  
+    return new Promise((resolve, reject) => {
+      pool.query(query, values, (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          const id = results.insertId;
+          const task = new Task(id, title, description, createdBy);
+          resolve(task);
+        }
+      });
+    });
+  }
+  
+  static async updateTask(id, title, description) {
+    const query = 'UPDATE tasks SET title = ?, description = ? WHERE id = ?';
+    const values = [title, description, id];
+  
+    return new Promise((resolve, reject) => {
+      pool.query(query, values, (error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+  
+  static async deleteTask(id) {
+    const query = 'DELETE FROM tasks WHERE id = ?';
+    const values = [id];
+  
+    return new Promise((resolve, reject) => {
+      pool.query(query, values, (error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+  
+
 }
 
 module.exports = Task;
