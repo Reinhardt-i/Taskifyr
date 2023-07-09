@@ -53,4 +53,9 @@ const authController = require('./authController');
 router.get('/tasks', authController.verifyToken, taskController.getTasks);
 router.post('/tasks', authController.verifyToken, taskController.createTask);
 
+router.put('/tasks/:id', authController.authenticateToken, taskController.updateTask);
+router.delete('/tasks/:id', authController.authenticateToken, taskController.deleteTask);
+
+
+
 module.exports = router;

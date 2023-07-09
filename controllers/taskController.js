@@ -72,6 +72,19 @@ exports.updateTask = (req, res) => {
       return res.status(200).json(updatedTask);
     });
   });
+
+  Task.findOneAndUpdate({ _id: taskId, user: userId }, { title, description }, { new: true })
+    .then(updatedTask => {
+      if (!updatedTask) {
+        return res.status(404).json({ message: 'Task not found' });
+      }
+      res.status(200).json(updatedTask);
+    })
+    .catch(err => {
+      console.error('Error updating task:', err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+
 };
 
 
@@ -102,5 +115,20 @@ exports.deleteTask = (req, res) => {
       return res.status(204).json({ message: 'Task deleted successfully' });
     });
   });
+
+  // Find the task by ID and user ID
+  Task.findOneAndDelete({ _id: taskId, user: userId })
+  .then(deletedTask => {
+    if (!deletedTask) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+    res.status(204).json({ message: 'Task deleted successfully' });
+  })
+  .catch(err => {
+    console.error('Error deleting task:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  });
+
+
 };
 
