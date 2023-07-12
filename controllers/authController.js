@@ -1,74 +1,99 @@
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const config = require('../config/config');
+const db = require('../db');
 
-// Generate JWT token
-function generateToken(user) {
-  const payload = {
-    userId: user.id,
-    email: user.email
-  };
-
-  // Sign the JWT token with the secret key and set expiration time
-  const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '1h' });
-  return token;
-}
-
-// Authenticate user and generate token
-function login(req, res) {
+exports.register = (req, res) => {
   const { username, password } = req.body;
 
-  // Find the user with the given username
-  User.findByUsername(username)
-    .then(user => {
-      if (!user) {
-        return res.status(401).json({ message: 'Invalid credentials' });
+  // Validate input
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username and password are required' });
+  }
+
+  // Check if the username already exists in the database
+  db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+    if (err) {
+      console.error('Error checking username in the database:', err);
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+
+    if (results.length > 0) {
+      return res.status(409).json({ message: 'Username already exists' });
+    }
+
+    // Hash the password
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+      if (err) {
+        console.error('Error hashing password:', err);
+        return res.status(500).json({ message: 'Internal server error' });
       }
 
-      // Compare the provided password with the stored password
-      bcrypt.compare(password, user.password, (err, isMatch) => {
+      // Insert the new user into the database
+      db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err) => {
         if (err) {
-          console.error('Error comparing passwords:', err);
+          console.error('Error inserting user into the database:', err);
           return res.status(500).json({ message: 'Internal server error' });
         }
 
-        if (!isMatch) {
-          return res.status(401).json({ message: 'Invalid credentials' });
-        }
-
-        // If the passwords match, generate a token
-        const token = generateToken(user);
-        res.json({ token });
+        return res.status(201).json({ message: 'User registered successfully' });
       });
-    })
-    .catch(err => {
-      console.error('Error fetching user:', err);
-      return res.status(500).json({ message: 'Internal server error' });
     });
-}
+  });
+};
 
+exports.login = (req, res) => {
+  const { username, password } = req.body;
 
-// Verify token middleware
-function verifyToken(req, res, next) {
-  const token = req.headers.authorization;
-
-  // Check if token is provided
-  if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
+  // Validate input
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username and password are required' });
   }
 
-  // Verify and decode the token
-  jwt.verify(token, config.jwtSecret, (err, decoded) => {
+  // Check if the username exists in the database
+  db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
     if (err) {
-      return res.status(401).json({ message: 'Invalid token' });
+      console.error('Error checking username in the database:', err);
+      return res.status(500).json({ message: 'Internal server error' });
     }
 
-    // Store the decoded token payload in the request object
-    req.user = decoded;
+    if (results.length === 0) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    const user = results[0];
+
+    // Compare the provided password with the hashed password in the database
+    bcrypt.compare(password, user.password, (err, isMatch) => {
+      if (err) {
+        console.error('Error comparing passwords:', err);
+        return res.status(500).json({ message: 'Internal server error' });
+      }
+
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Invalid credentials' });
+      }
+
+      // Generate JWT
+      const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET);
+
+      // Return the JWT to the client
+      return res.status(200).json({ token });
+    });
+  });
+};
+
+exports.authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Access token not found' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ message: 'Invalid or expired token' });
+    }
+    req.user = user;
     next();
   });
-}
-
-module.exports = {
-  login,
-  verifyToken
 };

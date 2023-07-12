@@ -1,4 +1,3 @@
 module.exports = {
-    jwtSecret: 'ooS8XumrBnzzXn47kBavC3tWVhvXPQ5Ro6FGfltInM14juRXkdCve2z0Ty8OX+ici26KIJRpDaLAtmZlxFtV+qp9GEYT3MCJUeIk2YA9vLhs8eF55ZR6y4FG90SBhshGmdEbQBFIwrW1QG9cOwnpaNeswVlUeUxOf+S+iMckueIDVRdmgPWyDMTUCPdT3ZlmaO+RQ8bcBD57cBIDsfLFP5Su/ohkdKIxuY9wzt5ukSM2MszTX+NhpGaSjhWQAyn6oHikSvvoIsAqfoQAyoMY3E7QeESnT3E+Naf/gI782ATwTK79STifsEo+kl6g2mlRSylD/xMWBRzyHM2L1Cs/Nw=='
-  };
-  
+  jwtSecret: 'ooS8XumrBnzzXn47kBavC3tWVhvXPQ5Ro6FGfltInM14juRXkdCve2z0Ty8OX+ici26KIJRpDaLAtmZlxFtV+qp9GEYT3MCJUeIk2YA9vLhs8eF55ZR6y4FG90SBhshGmdEbQBFIwrW1QG9cOwnpaNeswVlUeUxOf+S+iMckueIDVRdmgPWyDMTUCPdT3ZlmaO+RQ8bcBD57cBIDsfLFP5Su/ohkdKIxuY9wzt5ukSM2MszTX+NhpGaSjhWQAyn6oHikSvvoIsAqfoQAyoMY3E7QeESnT3E+Naf/gI782ATwTK79STifsEo+kl6g2mlRSylD/xMWBRzyHM2L1Cs/Nw=='
+};

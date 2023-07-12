@@ -1,59 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Taskifyr</title>
-  <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TASKIFYR</title>
+    <link rel="stylesheet" href="public/css/style.css">
+    <style>
+        .box-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .box {
+            width: 45%;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Taskifyr</h1>
-    <nav>
-      <ul>
-        <li><a href="/login">Login</a></li>
-        <li><a href="/register">Register</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main>
-    <section class="task-section">
-      <h2>Tasks</h2>
-      <ul id="taskList">
-        <li class="task-item">
-          <h3>Task 1</h3>
-          <p>This is task 1</p>
-        </li>
-        <li class="task-item">
-          <h3>Task 2</h3>
-          <p>This is task 2</p>
-        </li>
-        <li class="task-item">
-          <h3>Task 3</h3>
-          <p>This is task 3</p>
-        </li>
-      </ul>
-    </section>
-
-    <section class="form-section">
-      <h2>Add a new task</h2>
-      <form id="taskForm">
-        <div class="form-group">
-          <label for="title">Title</label>
-          <input type="text" id="title">
-        </div>
-        <div class="form-group">
-          <label for="description">Description</label>
-          <input type="text" id="description">
-        </div>
-        <button type="submit">Add Task</button>
-      </form>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; TASKIFYR</p>
-  </footer>
-
-  <script src="/js/app.js"></script>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <aside>
+            <h2>User Profile</h2>
+            <p>Name: John Doe</p>
+            <p>Email: johndoe@example.com</p>
+            <p>Tasks Completed: 10</p>
+        </aside>
+        <header>
+            <h1>TASKIFYR</h1>
+            <p>Streamline your productivity and conquer your TO-DO list with Taskifyr!</p>
+        </header>
+        <main>
+            <div class="box-container">
+                <div class="box">
+                    <h2>Your Tasks</h2>
+                    <ul id="taskList">
+                        <li><input type="checkbox" id="task1"><label for="task1">Task 1</label></li>
+                        <li><input type="checkbox" id="task2"><label for="task2">Task 2</label></li>
+                        <li><input type="checkbox" id="task3"><label for="task3">Task 3</label></li>
+                    </ul>
+                </div>
+                <div class="box">
+                    <h2>Completed Tasks</h2>
+                    <ul id="completedTaskList">
+                        <li><input type="checkbox" id="task4" checked><label for="task4" class="completed-task">Task 4</label></li>
+                    </ul>
+                </div>
+            </div>
+            <button id="openModal">Add New Task</button>
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <form id="taskForm">
+                        <div class="form-group">
+                            <label for="title">Title</label>
+                            <input type="text" id="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea id="description" required></textarea>
+                        </div>
+                        <button type="submit">Add Task</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2023 TASKIFYR</p>
+        </footer>
+    </div>
+    <script src="public/js/main.js"></script>
 </body>
 </html>
