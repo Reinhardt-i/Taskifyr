@@ -80,35 +80,6 @@ async function addTask(event) {
   }
 }
 
-
-async function login(event) {
-  event.preventDefault();
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-
-  const userData = { username, password };
-  try {
-    const response = await fetch('/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to login');
-    }
-
-    const { token } = await response.json();
-    localStorage.setItem('token', token); // Store the token in local storage
-  } catch (error) {
-    console.error('Error logging in:', error);
-  }
-}
-
-
-
 // Event listener for form submission
 document.getElementById('taskForm').addEventListener('submit', addTask);
 

@@ -1,4 +1,3 @@
-
 -- Create the Taskifyr database
 CREATE DATABASE taskifyr;
 USE taskifyr;
