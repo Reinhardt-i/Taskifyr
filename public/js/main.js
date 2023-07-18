@@ -86,3 +86,23 @@ async function fetchTasks() {
   // Initial fetch of tasks when the page loads
   fetchTasks();
   
+
+
+
+// Function to show a small task creation popup
+function showTaskPopup() {
+  const taskPopup = document.getElementById('taskPopup');
+  taskPopup.classList.add('show');
+  setTimeout(() => {
+      taskPopup.classList.remove('show');
+  }, 3000);
+}
+
+// Event listener for form submission
+document.getElementById('taskForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  addTask(event);
+  showTaskPopup();
+});
+
+

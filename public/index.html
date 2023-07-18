@@ -6,41 +6,255 @@
     <title>TASKIFYR</title>
     <link rel="stylesheet" href="public/css/style.css">
     <style>
+        body {
+            background-color: #222;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            font-size: 18px;
+            margin: 0;
+        }
+        
         .box-container {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
         }
+        
         .box {
             width: 45%;
-            border: 1px solid #ddd;
+            background-color: #333;
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
             margin-bottom: 20px;
         }
+        
+        .box h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 0;
+        }
+        
+        .box ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .box li {
+            margin-bottom: 10px;
+        }
+        
+        .box label {
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        #openModal {
+            display: block;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 20px auto;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        #openModal:hover {
+            background-color: #555;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #888;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: #555;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #888;
+        }
+        
+        .form-group button[type="submit"] {
+            display: block;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .form-group button[type="submit"]:hover {
+            background-color: #555;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #888;
+        }
+        
+        footer p {
+            font-size: 14px;
+            margin: 0;
+        }
+        .user-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .user-info span {
+            font-size: 18px;
+        }
+        
+        .signout-button {
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .signout-button:hover {
+            background-color: #555;
+        }
+        
+        .task-popup {
+            display: none;
+            background-color: #333;
+            color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .task-popup.show {
+            display: block;
+            animation: fadeOut 3s ease-in-out;
+        }
+        
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                display: none;
+            }
+        }
     </style>
+
 </head>
 <body>
     <div class="container">
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-        <aside>
-            <h2>User Profile</h2>
-            <p>Name: John Doe</p>
-            <p>Email: johndoe@example.com</p>
-            <p>Tasks Completed: 10</p>
-        </aside>
         <header>
             <h1>TASKIFYR</h1>
             <p>Streamline your productivity and conquer your TO-DO list with Taskifyr!</p>
         </header>
         <main>
+            <div class="user-section">
+                <div class="user-info">
+                    <i class="fas fa-user"></i>
+                    <span>Welcome, <strong>John Doe</strong>!</span>
+                </div>
+                <button class="signout-button">Sign Out</button>
+            </div>
             <div class="box-container">
                 <div class="box">
                     <h2>Your Tasks</h2>
@@ -74,6 +288,7 @@
                     </form>
                 </div>
             </div>
+            <div id="taskPopup" class="task-popup">Task Created Successfully!</div>
         </main>
         <footer>
             <p>&copy; 2023 TASKIFYR</p>
