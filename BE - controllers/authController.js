@@ -77,6 +77,9 @@ exports.login = (req, res) => {
       // Generate JWT
       const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET);
 
+      // Redirect the user to index.html after successful login
+      res.redirect('/index.html');
+
       // Return the JWT to the client
       return res.status(200).json({ token });
     });

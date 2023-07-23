@@ -9,6 +9,9 @@ CREATE TABLE users (
   password VARCHAR(255) NOT NULL
 );
 
+-- The default user with the username "admin1" and hashed password for "password1"
+INSERT INTO users (username, password) VALUES ('admin1', '$2b$10$Gr3W3sz54NAGD5kpXkVutuJKcc64Yc/b21rF4CRjLbrBAMNCgzGve');
+
 -- Create the tasks table
 CREATE TABLE tasks (
   id INT AUTO_INCREMENT PRIMARY KEY,

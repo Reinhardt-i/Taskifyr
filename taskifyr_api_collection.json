@@ -1,0 +1,35 @@
+{
+    "info": {
+      "_postman_id": "f38dd89f-8a91-42e1-8a14-1e6ca7a1f000",
+      "name": "Taskifyr API",
+      "description": "API requests for Taskifyr application",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Login",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"username\": \"admin1\",\n    \"password\": \"password1\"\n}"
+          },
+          "url": {
+            "raw": "http://localhost:3000/auth/login",
+            "protocol": "http",
+            "host": [
+              "localhost"
+            ],
+            "port": "3000",
+            "path": [
+              "auth",
+              "login"
+            ]
+          }
+        },
+        "response": []
+      }
+    ]
+  }
+  
