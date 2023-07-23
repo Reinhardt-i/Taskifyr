@@ -294,8 +294,37 @@
     </div>
     <script src="public/js/app.js"></script>
     <script>
+        // Get the form
+        var form = document.getElementById("taskForm");
+    
+        // Get the task list
+        var taskList = document.getElementById("taskList");
+    
         // Get the modal
         var modal = document.getElementById("modal");
+    
+        // Handle form submission
+        form.onsubmit = function(e) {
+            // Prevent form submission
+            e.preventDefault();
+    
+            // Get the title and description
+            var title = document.getElementById("title").value;
+            var description = document.getElementById("description").value;
+    
+            // Create a new task
+            var newTask = document.createElement("li");
+            newTask.innerHTML = '<input type="checkbox" id="' + title + '"><label for="' + title + '">' + description + '</label>';
+    
+            // Add the new task to the task list
+            taskList.appendChild(newTask);
+    
+            // Clear the form
+            form.reset();
+    
+            // Close the modal
+            modal.style.display = "none";
+        }
     
         // Get the button that opens the modal
         var btn = document.getElementById("openModal");
@@ -303,7 +332,7 @@
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
     
-        // When the user clicks the button, open the modal 
+        // When the user clicks on the button, open the modal
         btn.onclick = function() {
             modal.style.display = "block";
         }
@@ -320,6 +349,7 @@
             }
         }
     </script>
+    
     
 </body>
 </html>
