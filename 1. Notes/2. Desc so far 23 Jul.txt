@@ -1,0 +1,45 @@
+Taskifyr is a task management web app built using Node.js, Express.js, and MySQL for the backend and HTML, CSS, and JavaScript for the frontend. The app allows users to create and manage tasks, set due dates, and collaborate with others.
+
+Here's a brief overview of the files and their functionalities:
+
+login.html: A login page with a form for users to enter their username and password to log in.
+
+register.html: A registration page with a form for users to create a new account by providing a username and password.
+
+index.html: The main page of the app, displaying a list of tasks and a link to create a new task.
+
+style.css: CSS stylesheet for styling the app's UI.
+
+app.js: JavaScript file responsible for fetching tasks from the backend and rendering them on the index.html page.
+
+main.js: JavaScript file used in conjunction with Node-webkit to test a module.
+
+register.js: JavaScript file handling the registration form's submission and sending the data to the server for user registration.
+
+authController.js: Controller file containing functions for user registration, login, and authentication using JWT (JSON Web Tokens).
+
+taskController.js: Controller file containing functions for handling CRUD operations on tasks.
+
+taskModel.js: Model file defining the Task class and its methods for interacting with the database.
+
+userModel.js: Model file defining the User class and its methods for interacting with the database.
+
+authRoutes.js: Routing file containing authentication-related routes (login, register, logout).
+
+taskRoutes.js: Routing file containing task-related routes (get all tasks, create task, update task, delete task).
+
+config.js: Configuration file containing the JWT secret used for token generation and validation.
+
+db.js: File containing the MySQL connection pool to be used for database queries.
+
+initDB.sql: SQL script to create the Taskifyr database and tables (users and tasks).
+
+server.js: Main server file setting up the Express app, middleware, and routes, and starting the server.
+
+package.json: Package file containing project information, dependencies, and scripts.
+
+README.md: A readme file providing information about the app, installation, and usage instructions.
+
+Overall, Taskifyr is a simple task management web application that allows users to register, log in, create, update, and delete tasks. The application uses JSON Web Tokens (JWT) for user authentication and MySQL for data storage. Users can access the app through a web browser by running the server on the specified port (default is 3000).
+
+If you have any specific questions or need further assistance with any part of the code or implementation, feel free to ask!
