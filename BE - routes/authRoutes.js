@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('./authController');
+const authController = require('../controllers/authController');
 
 // Authentication routes
 router.get('/login', (req, res) => {
-  res.render('login');
+  res.sendFile(path.join(__dirname, '../public', 'login.html'));
 });
 
 router.post('/login', authController.login);
 
 router.get('/register', (req, res) => {
-  res.render('register');
+  res.sendFile(path.join(__dirname, '../public', 'register.html'));
 });
 
 router.post('/register', authController.register);
