@@ -41,5 +41,3 @@ package.json: Package file containing project information, dependencies, and scr
 README.md: A readme file providing information about the app, installation, and usage instructions.
 
 Overall, Taskifyr is a simple task management web application that allows users to register, log in, create, update, and delete tasks. The application uses JSON Web Tokens (JWT) for user authentication and MySQL for data storage. Users can access the app through a web browser by running the server on the specified port (default is 3000).
-
-If you have any specific questions or need further assistance with any part of the code or implementation, feel free to ask!

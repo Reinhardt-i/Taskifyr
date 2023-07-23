@@ -1,3 +1,4 @@
+// authController.js
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
@@ -96,4 +97,10 @@ exports.authenticateToken = (req, res, next) => {
     req.user = user;
     next();
   });
+};
+
+exports.logout = (req, res) => {
+  // Might handle logout logic here,
+  // such as invalidating the token or clearing the user's session.
+  return res.status(200).json({ message: 'Logout successful' });
 };
