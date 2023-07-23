@@ -15,7 +15,11 @@ app.use(cors());
 app.use(helmet());
 
 // Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'FE - public')));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'FE - public', 'login.html'));
+});
+
 
 // Rate limiting
 const limiter = rateLimit({
@@ -25,10 +29,17 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Routes
-const authRoutes = require('./routes/authRoutes');
-const taskRoutes = require('./routes/taskRoutes');
+const authRoutes = require('./BE - routes/authRoutes');
+const taskRoutes = require('./BE - routes/taskRoutes');
 app.use('/auth', authRoutes);
 app.use('/tasks', taskRoutes);
+
+
+app.get('/', (req, res) => {
+  // You can send a response or render an HTML page here
+  res.send('Welcome to Taskifyr!');
+});
+
 
 // Start the server
 app.listen(port, () => {

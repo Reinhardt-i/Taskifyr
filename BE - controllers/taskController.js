@@ -1,9 +1,9 @@
-const Task = require('../models/Task');
+const Task = require('../BE - controllers/taskController.js');
 
 exports.getAllTasks = async (req, res) => {
   try {
     const tasks = await Task.getAllTasks();
-    res.render('index', { tasks });
+    res.render('./FE - views/index', { tasks });
   } catch (error) {
     console.error('Error fetching tasks:', error);
     res.status(500).json({ message: 'Internal server error' });

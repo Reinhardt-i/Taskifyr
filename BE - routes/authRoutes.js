@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/authController');
+const authController = require('../BE - controllers/authController');
 
 // Authentication routes
 router.get('/login', (req, res) => {
